@@ -2,10 +2,10 @@ function Calculator(inputString){
   this.tokenStream = this.lexer(inputString);
 
 }
-function TreeNode(name){
-  this.parent = name;
-  var args = [].slice.call(arguments);
-  this.children = args.slice(1);
+function TreeNode(name, ...children){
+  this.name = name;
+  // var args = [].slice.call(arguments);
+  this.children = children;
 }
 
 Calculator.prototype.lexer = function(input){
@@ -106,24 +106,26 @@ Calculator.prototype.parseFactor = function () {
     this.get();
     return new TreeNode("F","-",this.parseFactor());
   }else if(nextToken && nextToken.name === "NUMBER"){
-    return new TreeNode("NUMBER"); //this.get());
+    return new TreeNode("Factor", this.get().value);
   }
 }
-var calculator = new Calculator("(3)");
+// var calculator = new Calculator("(3)");
 
-// make a fake version of parseExpression
-var fakeExpressionTreeNode = new TreeNode("Expression", "3");
-calculator.parseExpression = function() {
-  this.get(); // remove the 3 when parseFactor runs
-  return fakeExpressionTreeNode;
-}
+// // make a fake version of parseExpression
+// var fakeExpressionTreeNode = new TreeNode("Expression", "3");
+// calculator.parseExpression = function() {
+//   this.get(); // remove the 3 when parseFactor runs
+//   return fakeExpressionTreeNode;
+// }
 
-var output = calculator.parseFactor();
-console.log(output.name);
-console.log(output.children);
+// var output = calculator.parseFactor();
+// console.log(output.name);
+// console.log(output.children);
 // check that
 // output.name == "Factor"
 // output.children = ["(", fakeExpressionTreeNode, ")"];
+
+
 
 
 // var calc = new Calculator("1+(2*3)+4");
